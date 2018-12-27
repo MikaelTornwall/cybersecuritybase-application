@@ -5,16 +5,13 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>    
-        <title>Dashboard</title>        
+    <head>
+        <title>Confirmation</title>        
     </head>
     <body>
         <div>
-            <h1>Dashboard</h1>
-            <h2>Users</h2>
-            <ul th:each="user : ${users}">
-                <li th:text="${user.username}"></li>
-            </ul>
+            <h2>Congratulations! You have been registered!</h2>
+            <h3><a href="/signin">Sign in here.</a></h3>
         </div>
     </body>
 </html>
