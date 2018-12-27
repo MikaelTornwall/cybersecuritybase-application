@@ -1,9 +1,9 @@
 package cybersecurity.project.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import cybersecurity.project.domain.User;
-import cybersecurity.project.domain.Users;
-import cybersecurity.project.domain.Admins;
+import cybersecurity.project.repository.UserRepository;
 import java.util.ArrayList;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,23 +14,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserController {
     private ArrayList<User> userList;
-    private ArrayList<User> adminList;
-    private Users users;
-    private Admins admins;
+    private ArrayList<User> adminList;    
+    
+    @Autowired
+    private UserRepository userRepository;
     
     public UserController() {
-        this.userList = new ArrayList<>();  
-        this.adminList = new ArrayList<>();
-        this.users = new Users();
-        this.admins= new Admins();
+        super();
         
-        this.users.getUsers().stream().forEach(user -> userList.add(user));
-        this.admins.getAdmins().stream().forEach(admin -> adminList.add(admin));
+        this.userList = new ArrayList<>(); 
+        this.adminList = new ArrayList<>();               
     }     
     
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
     public String loadSignin(Model model) {
-        model.addAttribute("notification", "Sign in below:");
+        model.addAttribute("notification", "Sign in below:");                
+                
+        userRepository.save(new User("User1", "password1"));
+        
         return "signin";        
     }    
     
@@ -43,8 +44,9 @@ public class UserController {
     
     @RequestMapping(value = "/signin", method = RequestMethod.POST)     
     public String submitForm(@RequestParam String name, @RequestParam String password, Model model) {        
-        System.out.println("LÄPI MENEE");     
-        System.out.println(name + password);
+        System.out.println("LÄPI MENEE");                     
+        
+        this.userRepository.findAll().stream().forEach(user -> this.userList.add(user));
         
         boolean foundUser = false;
         boolean foundAdmin = false;
@@ -62,7 +64,7 @@ public class UserController {
         }
         
         if (foundUser) {
-            return "redirect:/notes";
+            return "redirect:/messages";
         }
         
         if (foundAdmin) {
@@ -81,10 +83,9 @@ public class UserController {
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)    
     public String loadRegister(@RequestParam String username, @RequestParam String password) {
-        System.out.println(username + password);
+        System.out.println(username + password);                
         
-        User user = new User(username, password); 
-        this.users.addUser(user);
+        User user = new User(username, password);        
         this.userList.add(user);
         
         return "registered";
