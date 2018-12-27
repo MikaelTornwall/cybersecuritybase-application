@@ -19,9 +19,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
     
-    public UserController() {
-        super();
-        
+    public UserController() {                
         this.userList = new ArrayList<>(); 
         this.adminList = new ArrayList<>();               
     }     
@@ -43,8 +41,7 @@ public class UserController {
     }                
     
     @RequestMapping(value = "/signin", method = RequestMethod.POST)     
-    public String submitForm(@RequestParam String name, @RequestParam String password, Model model) {        
-        System.out.println("LÄPI MENEE");                     
+    public String submitForm(@RequestParam String name, @RequestParam String password, Model model) {                                  
         
         this.userRepository.findAll().stream().forEach(user -> this.userList.add(user));
         
