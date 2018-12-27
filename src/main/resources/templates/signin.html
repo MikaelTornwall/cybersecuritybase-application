@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Sign In</title>        
+    </head>
+    <body>
+        <div>
+        <h1>Sign In</h1>        
+            <p th:text="${notification}"></p>        
+        <form action="/signin" th:action="@{/signin}" method="POST">
+            Username: <input type="text" name="name" id="name" placeholder="username" /> 
+            <br />
+            Password: <input type="text" name="password" id="password" placeholder="password" />
+            <br />
+            <input type="submit" value="Sign in" />
+        </form>
+        </div> 
+    </body>
+</html>
