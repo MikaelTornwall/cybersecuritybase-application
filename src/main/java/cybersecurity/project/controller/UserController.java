@@ -3,7 +3,9 @@ package cybersecurity.project.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import cybersecurity.project.domain.User;
+import cybersecurity.project.domain.Admin;
 import cybersecurity.project.repository.UserRepository;
+import cybersecurity.project.repository.AdminRepository;
 import java.util.ArrayList;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,21 +16,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserController {
     private ArrayList<User> userList;
-    private ArrayList<User> adminList;    
+    private ArrayList<Admin> adminList;    
     
     @Autowired
     private UserRepository userRepository;
     
+    @Autowired
+    private AdminRepository adminRepository;
+    
     public UserController() {                
         this.userList = new ArrayList<>(); 
-        this.adminList = new ArrayList<>();               
+        this.adminList = new ArrayList<>();         
     }     
+        
+    public void init() {
+        userRepository.save(new User("User1", "password1"));
+        adminRepository.save(new Admin("Admin", "password"));
+    }
     
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
-    public String loadSignin(Model model) {
-        model.addAttribute("notification", "Sign in below:");                
-                
-        userRepository.save(new User("User1", "password1"));
+    public String loadSignin(Model model) {                
+        
+        if (this.userList.isEmpty() && this.adminList.isEmpty()) {
+            init();
+        }
+        
+        model.addAttribute("notification", "Sign in below:");   
         
         return "signin";        
     }    
@@ -44,7 +57,7 @@ public class UserController {
     public String submitForm(@RequestParam String name, @RequestParam String password, Model model) {                                  
         
         this.userRepository.findAll().stream().forEach(user -> this.userList.add(user));
-        
+        this.adminRepository.findAll().stream().forEach(admin -> this.adminList.add(admin));
         boolean foundUser = false;
         boolean foundAdmin = false;
         
@@ -54,8 +67,8 @@ public class UserController {
             }
         }
         
-        for (User admin : this.adminList) {
-            if (admin.getUsername().equals(name) && admin.getPassword().equals(password)) {
+        for (Admin admin : this.adminList) {
+            if (admin.getAdmin().equals(name) && admin.getPassword().equals(password)) {
                 foundAdmin = true;
             }
         }

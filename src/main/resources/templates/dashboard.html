@@ -12,9 +12,13 @@ and open the template in the editor.
         <div>
             <h1>Dashboard</h1>
             <h2>Users</h2>
-            <ul th:each="user : ${users}">
-                <li th:text="${user.username}"></li>
-            </ul>
+            <div th:each="user : ${users}">
+                <span>Username: </span><span th:text="${user.username}"></span>
+                <br />
+                <span>Password: </span><span th:text="${user.password}"></span>
+                <br />
+                <br />
+            </div>
         </div>
     </body>
 </html>
