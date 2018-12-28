@@ -15,7 +15,7 @@ and open the template in the editor.
             <div th:each="content : ${messages}">
                 <i th:text="${content.date}" style="font-size:0.8rem"></i>
                 &nbsp;
-                <strong th:text="${content.message}"></strong>
+                <strong th:utext="${content.message}"></strong>
             </div>
             
         </div>
