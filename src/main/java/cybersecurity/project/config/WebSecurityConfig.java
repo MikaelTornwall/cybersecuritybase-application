@@ -1,4 +1,4 @@
-package cybersecurity.project.config;
+/*package cybersecurity.project.config;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,3 +13,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
     }
 }
+*/

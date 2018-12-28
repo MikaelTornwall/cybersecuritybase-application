@@ -32,32 +32,38 @@ public class UserController {
     public void init() {
         userRepository.save(new User("User1", "password1"));
         adminRepository.save(new Admin("Admin", "password"));
+        this.userRepository.findAll().stream().forEach(user -> this.userList.add(user));
+        this.adminRepository.findAll().stream().forEach(admin -> this.adminList.add(admin));
     }
     
-    @RequestMapping(value = "/signin", method = RequestMethod.GET)
-    public String loadSignin(Model model) {                
+    @RequestMapping("*")    
+    public String defaultMapping() {          
         
         if (this.userList.isEmpty() && this.adminList.isEmpty()) {
             init();
         }
         
+        return "landingpage";
+    }
+    
+    @RequestMapping(value = "/signin", method = RequestMethod.GET)
+    public String loadSignin(Model model) {                                
+        
         model.addAttribute("notification", "Sign in below:");   
         
         return "signin";        
     }    
-    
+        
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String dashboard(Model model) {
         model.addAttribute("users", this.userList);
         
         return "dashboard";        
-    }                
+    }               
     
     @RequestMapping(value = "/signin", method = RequestMethod.POST)     
     public String submitForm(@RequestParam String name, @RequestParam String password, Model model) {                                  
-        
-        this.userRepository.findAll().stream().forEach(user -> this.userList.add(user));
-        this.adminRepository.findAll().stream().forEach(admin -> this.adminList.add(admin));
+                
         boolean foundUser = false;
         boolean foundAdmin = false;
         
